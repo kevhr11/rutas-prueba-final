@@ -2,7 +2,12 @@ import React from "react";
 import { dataTable } from "@/app/rutas/dataTableInterface";
 import { Table, Button } from "antd";
 
-const MyTable: React.FC<{ data: dataTable[] }> = ({ data }) => {
+interface MyTableProps {
+  data: dataTable[];
+  modalEditar: (rowData: dataTable) => void;
+}
+
+const MyTable: React.FC<MyTableProps> = ({ data, modalEditar }) => {
   const columns = [
     {
       title: "Tipo de viaje",
@@ -25,7 +30,7 @@ const MyTable: React.FC<{ data: dataTable[] }> = ({ data }) => {
       key: "destinoRuta",
     },
     {
-      title: "Georreferenciacion",
+      title: "Georreferenciación",
       dataIndex: "georreferenciacion",
       key: "georreferenciacion",
     },
@@ -36,11 +41,15 @@ const MyTable: React.FC<{ data: dataTable[] }> = ({ data }) => {
     },
     {
       title: "Acciones",
-      dataIndex: "verGeorreferenciacion",
       key: "acciones",
-      render: () => (
+      render: (data: dataTable) => (
         <>
-          <Button type="primary" >Editar</Button> <Button type="primary" danger>Editar</Button>
+          <Button type="primary" onClick={() => modalEditar(data)}>
+            Editar
+          </Button>{" "}
+          <Button type="primary" danger>
+            Eliminar
+          </Button>
         </>
       ),
     },

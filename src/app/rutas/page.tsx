@@ -31,6 +31,7 @@ const { Item } = Form;
 
 const Page = () => {
   const [getData, setGetData] = useState<dataTable[]>([]);
+  const [getDataEditar, setGetDataEditar] = useState<dataTable>();
   /* const [envioDatos, setEnvioDatos] = useState({
     tipoViaje: "",
     nombreRuta: "",
@@ -39,6 +40,8 @@ const Page = () => {
     georreferenciacion: "",
     verGeorreferenciacion: "",
   }); */
+
+  /* Agregar */
 
   const [tipoViajeInput, setTipoViajeInput] = useState<string>("");
   const [nombreRutaInput, setNombreRutaInput] = useState<string>("");
@@ -49,7 +52,19 @@ const Page = () => {
   const [verGeorreferenciacionInput, setVerGeorreferenciacionInput] =
     useState<string>("");
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [modalVisibleEditar, setModalVisibleEditar] = useState<boolean>(false);
   const [form] = Form.useForm();
+  
+  /* Editar */
+  const [tipoViajeInputEditar, setTipoViajeInputEditar] = useState<string>("");
+  const [nombreRutaInputEditar, setNombreRutaInputEditar] = useState<string>("");
+  const [origenRutaInputEditar, setOrigenRutaInputEditar] = useState<string>("");
+  const [destinoRutaInputEditar, setDestinoRutaInputEditar] = useState<string>("");
+  const [georreferenciacionInputEditar, setGeorreferenciacionInputEditar] =
+    useState<string>("");
+  const [verGeorreferenciacionInputEditar, setVerGeorreferenciacionInputEditar] =
+    useState<string>("");
+
 
   const obtenerDatos = async () => {
     try {
@@ -103,27 +118,21 @@ const Page = () => {
     obtenerDatos();
   }, []);
 
-  const handleAddData = async () => {
+  const handleAddData = async (values: dataTable) => {
+    console.log("datos",values)
     try {
       const response = await axios.post(
         `https://firestore.googleapis.com/v1/projects/rutas-c1289/databases/(default)/documents/rutas`,
         {
           fields: {
-            tipoViaje: { stringValue: tipoViajeInput },
-            nombreRuta: { stringValue: nombreRutaInput },
-            origenRuta: { stringValue: origenRutaInput },
-            destinoRuta: { stringValue: destinoRutaInput },
-            georreferenciacion: { stringValue: georreferenciacionInput },
-            verGeorreferenciacion: { stringValue: verGeorreferenciacionInput },
-            /* tipoViaje: { stringValue: envioDatos.tipoViaje },
-            nombreRuta: { stringValue: envioDatos.nombreRuta },
-            origenRuta: { stringValue: envioDatos.origenRuta },
-            destinoRuta: { stringValue: envioDatos.destinoRuta },
-            georreferenciacion: { stringValue: envioDatos.georreferenciacion },
+            tipoViaje: { stringValue: values.tipoViaje },
+            nombreRuta: { stringValue: values.nombreRuta },
+            origenRuta: { stringValue: values.origenRuta },
+            destinoRuta: { stringValue: values.destinoRuta },
+            georreferenciacion: { stringValue: values.georreferenciacion },
             verGeorreferenciacion: {
-              stringValue: envioDatos.verGeorreferenciacion,
-            }, */
-            // ... otros campos
+              stringValue: values.verGeorreferenciacion,
+            },
           },
         }
       );
@@ -133,6 +142,8 @@ const Page = () => {
       console.error("Error al agregar datos:", error);
     }
   };
+
+  /* ------------------------------ Funciones Modal Insertar ------------------------------ */
 
   const abrirModal = () => {
     setModalVisible(true);
@@ -149,7 +160,7 @@ const Page = () => {
       .then((values) => {
         // Aquí puedes enviar los datos a la API
         console.log("Datos a enviar:", values);
-        handleAddData();
+        handleAddData(values);
         cerrarModal();
       })
       .catch((errorInfo) => {
@@ -157,25 +168,65 @@ const Page = () => {
       });
   };
 
-  const verificarDatos = () => {
-    console.log(tipoViajeInput);
+  /* ------------------------------ Funciones Modal Editar ------------------------------ */
+
+  const abrirModalEditar = () => {
+    setModalVisibleEditar(true);
+  };
+
+  const cerrarModalEditar = () => {
+    setModalVisibleEditar(false);
+    form.resetFields();
+  };
+
+  const seleccionarRutaEditar = (rowData: dataTable) => {
+    setGetDataEditar(rowData);
+    console.log(rowData);
+    abrirModalEditar();
+  };
+
+  const accionEditar = () => {
+    form
+      .validateFields()
+      .then((values) => {
+        // Aquí puedes enviar los datos a la API
+        console.log("Datos a enviar:", values);
+        /* handleAddData(values); */
+        cerrarModal();
+      })
+      .catch((errorInfo) => {
+        console.log("Error al validar campos:", errorInfo);
+      });
+  };
+
+
+
+  const layoutForm = {
+    labelCol: {
+      span: 10,
+    },
+    wrapperCol: {
+      span: 10,
+    },
   };
 
   return (
-    <div style={{ backgroundColor: "white", height: "100vh" }}>
+    <div>
       Rutas Page
       <Row justify="center">
         <Col xs={22} sm={20} md={18} lg={20}>
+          {/* ---------------- Modal insertar -------------------- */}
           <Button type="primary" onClick={abrirModal}>
-            Open Modal
+            Agregar ruta
           </Button>
           <br />
           <br />
           <Modal
-            title="Agregar rutas"
+            title="Agregar ruta"
             open={modalVisible}
             onOk={accion}
             onCancel={cerrarModal}
+            destroyOnClose={true}
             centered
             footer={[
               <Button onClick={cerrarModal}>Cancelar</Button>,
@@ -184,7 +235,7 @@ const Page = () => {
               </Button>,
             ]}
           >
-            <Form form={form}>
+            <Form form={form} {...layoutForm}>
               <Item
                 label="Tipo de Viaje"
                 name="tipoViaje"
@@ -195,7 +246,7 @@ const Page = () => {
                   },
                 ]}
               >
-                <Input onChange={(e) => setTipoViajeInput(e.target.value)} />
+                <Input />
               </Item>
               <Item
                 label="Nombre de la ruta"
@@ -207,7 +258,7 @@ const Page = () => {
                   },
                 ]}
               >
-                <Input onChange={(e) => setNombreRutaInput(e.target.value)} />
+                <Input />
               </Item>
               <Item
                 label="Origen de la ruta"
@@ -219,7 +270,7 @@ const Page = () => {
                   },
                 ]}
               >
-                <Input onChange={(e) => setOrigenRutaInput(e.target.value)} />
+                <Input />
               </Item>
               <Item
                 label="Destino de la ruta"
@@ -231,7 +282,112 @@ const Page = () => {
                   },
                 ]}
               >
-                <Input onChange={(e) => setDestinoRutaInput(e.target.value)} />
+                <Input />
+              </Item>
+              <Item
+                label="Georreferenciacion"
+                name="georreferenciacion"
+                rules={[
+                  {
+                    required: true,
+                    message: "Debe ingresar la georreferenciacion",
+                  },
+                ]}
+              >
+                <Input />
+              </Item>
+              <Item
+                label="Ver georreferenciacion"
+                name="verGeorreferenciacion"
+                rules={[
+                  {
+                    required: true,
+                    message: "Debe ingresar ver la georreferenciacion",
+                  },
+                ]}
+              >
+                <Input />
+              </Item>
+              <Item></Item>
+            </Form>
+          </Modal>
+
+          {/* ------------------------Modal Editar------------------------------------ */}
+
+          <Modal
+            title="Editar ruta"
+            open={modalVisibleEditar}
+            onOk={accion}
+            onCancel={cerrarModalEditar}
+            destroyOnClose={true}
+            centered
+            footer={[
+              <Button onClick={cerrarModalEditar}>Cancelar</Button>,
+              <Button type="primary" onClick={accionEditar}>
+                Enviar
+              </Button>,
+            ]}
+          >
+            <Form form={form} {...layoutForm}>
+              <Item
+                label="Tipo de Viaje"
+                name="tipoViaje"
+                rules={[
+                  {
+                    required: true,
+                    message: "Debe ingresar el tipo de viaje",
+                  },
+                ]}
+              >
+                <Input
+                  onChange={(e) => setTipoViajeInputEditar(e.target.value)}
+                  defaultValue={getDataEditar && getDataEditar.tipoViaje}
+                />
+              </Item>
+              <Item
+                label="Nombre de la ruta"
+                name="nombreRuta"
+                rules={[
+                  {
+                    required: true,
+                    message: "Debe ingresar el nombre de la ruta",
+                  },
+                ]}
+              >
+                <Input
+                  onChange={(e) => setNombreRutaInputEditar(e.target.value)}
+                  defaultValue={getDataEditar && getDataEditar.nombreRuta}
+                />
+              </Item>
+              <Item
+                label="Origen de la ruta"
+                name="origenRuta"
+                rules={[
+                  {
+                    required: true,
+                    message: "Debe ingresar el origen de la ruta",
+                  },
+                ]}
+              >
+                <Input
+                  onChange={(e) => setOrigenRutaInputEditar(e.target.value)}
+                  defaultValue={getDataEditar && getDataEditar.origenRuta}
+                />
+              </Item>
+              <Item
+                label="Destino de la ruta"
+                name="destinoRuta"
+                rules={[
+                  {
+                    required: true,
+                    message: "Debe ingresar el destino de la ruta",
+                  },
+                ]}
+              >
+                <Input
+                  onChange={(e) => setDestinoRutaInputEditar(e.target.value)}
+                  defaultValue={getDataEditar && getDataEditar.destinoRuta}
+                />
               </Item>
               <Item
                 label="Georreferenciacion"
@@ -244,7 +400,10 @@ const Page = () => {
                 ]}
               >
                 <Input
-                  onChange={(e) => setGeorreferenciacionInput(e.target.value)}
+                  onChange={(e) =>
+                    setGeorreferenciacionInputEditar(e.target.value)
+                  }
+                  defaultValue={getDataEditar && getDataEditar.georreferenciacion}
                 />
               </Item>
               <Item
@@ -259,14 +418,18 @@ const Page = () => {
               >
                 <Input
                   onChange={(e) =>
-                    setVerGeorreferenciacionInput(e.target.value)
+                    setVerGeorreferenciacionInputEditar(e.target.value)
+                  }
+                  defaultValue={
+                    getDataEditar && getDataEditar.verGeorreferenciacion
                   }
                 />
               </Item>
               <Item></Item>
             </Form>
           </Modal>
-          <Table data={getData} />
+          {/* <Table data={getData} modalEditar={abrirModalEditar} /> */}
+          <Table data={getData} modalEditar={seleccionarRutaEditar} />
         </Col>
       </Row>
     </div>
