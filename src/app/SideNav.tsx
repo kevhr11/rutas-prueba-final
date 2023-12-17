@@ -11,17 +11,7 @@ import Link from "next/link";
 
 const { Header, Content, Footer, Sider } = Layout;
 
-/* const items = [
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-  UserOutlined,
-].map((icon, index) => ({
-  key: String(index + 1),
-  icon: React.createElement(icon),
-  label: `user ${index + 1}`,
-}));
- */
+
 interface props {
   children: any;
 }
@@ -45,10 +35,10 @@ const SideNav = ({ children }: props) => {
       >
         <div className="demo-logo-vertical" />
         <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
-          <Menu.Item>
+          <Menu.Item key="ruta">
             <Link href="/rutas">Rutas</Link>
           </Menu.Item>
-          <Menu.Item>
+          <Menu.Item key="vehiculos">
             <Link href="/vehiculos">Vehiculos</Link>
           </Menu.Item>
         </Menu>
