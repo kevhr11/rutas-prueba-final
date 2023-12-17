@@ -11,7 +11,6 @@ import Link from "next/link";
 
 const { Header, Content, Footer, Sider } = Layout;
 
-
 interface props {
   children: any;
 }
@@ -22,7 +21,7 @@ const SideNav = ({ children }: props) => {
   } = theme.useToken();
 
   return (
-    <Layout>
+    <Layout style={{ minHeight: "100vh" }}>
       <Sider
         breakpoint="lg"
         collapsedWidth="0"
@@ -45,11 +44,12 @@ const SideNav = ({ children }: props) => {
       </Sider>
       <Layout>
         <Header style={{ padding: 0, background: colorBgContainer }} />
-        <Content style={{ margin: "24px 16px 0" }}>
+        <Content
+          style={{ margin: "24px 16px 0", minHeight: "calc(100vh - 64px)" }}
+        >
           <div
             style={{
               padding: 24,
-              minHeight: 360,
               background: colorBgContainer,
               borderRadius: borderRadiusLG,
             }}
@@ -66,3 +66,4 @@ const SideNav = ({ children }: props) => {
 };
 
 export default SideNav;
+

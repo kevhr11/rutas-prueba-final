@@ -78,8 +78,8 @@ const ModalEditar: React.FC<ModalEditarProps> = ({
               message: "Debe ingresar el tipo de viaje",
             },
             {
-              pattern: /^[A-Za-z]+$/, // Expresión regular para aceptar solo letras
-              message: "Solo se permite texto",
+              pattern: /^[A-Za-z\s]+$/, // Expresión regular para aceptar letras y espacios
+              message: "Solo se permite texto con espacios",
             },
           ]}
         >
@@ -94,8 +94,8 @@ const ModalEditar: React.FC<ModalEditarProps> = ({
               message: "Debe ingresar el nombre de la ruta",
             },
             {
-              pattern: /^[A-Za-z]+$/, // Expresión regular para aceptar solo letras
-              message: "Solo se permite texto",
+              pattern: /^[A-Za-z\s]+$/, // Expresión regular para aceptar letras y espacios
+              message: "Solo se permite texto con espacios",
             },
           ]}
         >
@@ -110,8 +110,8 @@ const ModalEditar: React.FC<ModalEditarProps> = ({
               message: "Debe ingresar el origen de la ruta",
             },
             {
-              pattern: /^[A-Za-z]+$/, // Expresión regular para aceptar solo letras
-              message: "Solo se permite texto",
+              pattern: /^[A-Za-z\s]+$/, // Expresión regular para aceptar letras y espacios
+              message: "Solo se permite texto con espacios",
             },
           ]}
         >
@@ -126,8 +126,8 @@ const ModalEditar: React.FC<ModalEditarProps> = ({
               message: "Debe ingresar el destino de la ruta",
             },
             {
-              pattern: /^[A-Za-z]+$/, // Expresión regular para aceptar solo letras
-              message: "Solo se permite texto",
+              pattern: /^[A-Za-z\s]+$/, // Expresión regular para aceptar letras y espacios
+              message: "Solo se permite texto con espacios",
             },
           ]}
         >
@@ -142,8 +142,8 @@ const ModalEditar: React.FC<ModalEditarProps> = ({
               message: "Debe ingresar la georreferenciacion",
             },
             {
-              pattern: /^[A-Za-z]+$/, // Expresión regular para aceptar solo letras
-              message: "Solo se permite texto",
+              pattern: /^[A-Za-z\s]+$/, // Expresión regular para aceptar letras y espacios
+              message: "Solo se permite texto con espacios",
             },
           ]}
         >
@@ -158,8 +158,8 @@ const ModalEditar: React.FC<ModalEditarProps> = ({
               message: "Debe ingresar ver la georreferenciacion",
             },
             {
-              pattern: /^[A-Za-z]+$/, // Expresión regular para aceptar solo letras
-              message: "Solo se permite texto",
+              pattern: /^[A-Za-z\s]+$/, // Expresión regular para aceptar letras y espacios
+              message: "Solo se permite texto con espacios",
             },
           ]}
         >
