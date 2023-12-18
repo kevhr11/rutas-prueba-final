@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
-import { dataTable } from "@/app/rutas/dataTableInterface";
+import { dataConductores } from "@/app/conductores/dataConductoresInterface";
 import { Form, Input, Button, Modal } from "antd";
 
 interface ModalEditarProps {
   modalVisibleEditar: boolean;
   setModalVisibleEditar: React.Dispatch<React.SetStateAction<boolean>>;
-  handleEditData: (values: dataTable, id: string) => void;
-  getDataEditar: dataTable | undefined;
+  handleEditData: (values: dataConductores, id: string) => void;
+  getDataEditar: dataConductores | undefined;
 }
 
 const ModalEditar: React.FC<ModalEditarProps> = ({
@@ -18,14 +18,12 @@ const ModalEditar: React.FC<ModalEditarProps> = ({
   const [form] = Form.useForm();
   const { Item } = Form;
 
-  
   useEffect(() => {
     if (modalVisibleEditar && getDataEditar) {
       form.setFieldsValue(getDataEditar);
     }
   }, [modalVisibleEditar, getDataEditar, form]);
 
-  
   const cerrarModalEditar = () => {
     form.resetFields();
     setModalVisibleEditar(false);
@@ -56,7 +54,7 @@ const ModalEditar: React.FC<ModalEditarProps> = ({
 
   return (
     <Modal
-      title="Editar ruta"
+      title="Editar conductor"
       open={modalVisibleEditar}
       onOk={accionEditar}
       onCancel={cerrarModalEditar}
@@ -70,12 +68,28 @@ const ModalEditar: React.FC<ModalEditarProps> = ({
     >
       <Form form={form} initialValues={getDataEditar || {}} {...layoutForm}>
         <Item
-          label="Tipo de Viaje"
-          name="tipoViaje"
+          label="Foto"
+          name="foto"
           rules={[
             {
               required: true,
-              message: "Debe ingresar el tipo de viaje",
+              message: "Debe ingresar la foto del conductor",
+            },
+            {
+              pattern: /^[a-zA-Z0-9_.-\s]*$/, // Expresión regular para aceptar letras y espacios
+              message: "Solo se permite texto con espacios",
+            },
+          ]}
+        >
+          <Input />
+        </Item>
+        <Item
+          label="Nombre del conductor"
+          name="nombre"
+          rules={[
+            {
+              required: true,
+              message: "Debe ingresar el nombre del conductor",
             },
             {
               pattern: /^[A-Za-z\s]+$/, // Expresión regular para aceptar letras y espacios
@@ -86,15 +100,15 @@ const ModalEditar: React.FC<ModalEditarProps> = ({
           <Input />
         </Item>
         <Item
-          label="Nombre de la ruta"
-          name="nombreRuta"
+          label="DUI del conductor"
+          name="dui"
           rules={[
             {
               required: true,
-              message: "Debe ingresar el nombre de la ruta",
+              message: "Debe ingresar el DUI del conductor",
             },
             {
-              pattern: /^[A-Za-z\s]+$/, // Expresión regular para aceptar letras y espacios
+              pattern: /^[a-zA-Z0-9_.-\s]*$/, // Expresión regular para aceptar letras y espacios
               message: "Solo se permite texto con espacios",
             },
           ]}
@@ -102,15 +116,15 @@ const ModalEditar: React.FC<ModalEditarProps> = ({
           <Input />
         </Item>
         <Item
-          label="Origen de la ruta"
-          name="origenRuta"
+          label="Dirección del conductor"
+          name="direccion"
           rules={[
             {
               required: true,
-              message: "Debe ingresar el origen de la ruta",
+              message: "Debe ingresar la dirección del conductor",
             },
             {
-              pattern: /^[A-Za-z\s]+$/, // Expresión regular para aceptar letras y espacios
+              pattern: /^[a-zA-Z0-9_.-\s]*$/, // Expresión regular para aceptar letras y espacios
               message: "Solo se permite texto con espacios",
             },
           ]}
@@ -118,15 +132,15 @@ const ModalEditar: React.FC<ModalEditarProps> = ({
           <Input />
         </Item>
         <Item
-          label="Destino de la ruta"
-          name="destinoRuta"
+          label="Edad del conductor"
+          name="edad"
           rules={[
             {
               required: true,
-              message: "Debe ingresar el destino de la ruta",
+              message: "Debe ingresar la edad del conductor",
             },
             {
-              pattern: /^[A-Za-z\s]+$/, // Expresión regular para aceptar letras y espacios
+              pattern: /^[a-zA-Z0-9_.-\s]*$/, // Expresión regular para aceptar letras y espacios
               message: "Solo se permite texto con espacios",
             },
           ]}
@@ -134,15 +148,15 @@ const ModalEditar: React.FC<ModalEditarProps> = ({
           <Input />
         </Item>
         <Item
-          label="Georreferenciacion"
-          name="georreferenciacion"
+          label="Licencia del conductor"
+          name="licencia"
           rules={[
             {
               required: true,
-              message: "Debe ingresar la georreferenciacion",
+              message: "Debe ingresar la licencia del conductor",
             },
             {
-              pattern: /^[A-Za-z\s]+$/, // Expresión regular para aceptar letras y espacios
+              pattern: /^[a-zA-Z0-9_.-\s]*$/, // Expresión regular para aceptar letras y espacios
               message: "Solo se permite texto con espacios",
             },
           ]}
@@ -150,15 +164,31 @@ const ModalEditar: React.FC<ModalEditarProps> = ({
           <Input />
         </Item>
         <Item
-          label="Ver georreferenciacion"
-          name="verGeorreferenciacion"
+          label="Telefono del conductor"
+          name="telefono"
           rules={[
             {
               required: true,
-              message: "Debe ingresar ver la georreferenciacion",
+              message: "Debe ingresar el telefono del conductor",
             },
             {
-              pattern: /^[A-Za-z\s]+$/, // Expresión regular para aceptar letras y espacios
+              pattern: /^[a-zA-Z0-9_.-\s]*$/, // Expresión regular para aceptar letras y espacios
+              message: "Solo se permite texto con espacios",
+            },
+          ]}
+        >
+          <Input />
+        </Item>
+        <Item
+          label="Correo del conductor"
+          name="correo"
+          rules={[
+            {
+              required: true,
+              message: "Debe ingresar el correo del conductor",
+            },
+            {
+              pattern: /^[a-zA-Z0-9_.@\s-]*$/, // Expresión regular para aceptar letras y espacios
               message: "Solo se permite texto con espacios",
             },
           ]}

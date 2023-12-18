@@ -130,6 +130,7 @@ const Page = () => {
       Rutas Page
       <Row justify="center">
         <Col xs={22} sm={20} md={18} lg={20}>
+          
           {/* ---------------- Modal insertar -------------------- */}
           <Button type="primary" onClick={abrirModal}>
             Agregar ruta

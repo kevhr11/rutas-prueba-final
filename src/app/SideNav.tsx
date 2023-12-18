@@ -37,6 +37,9 @@ const SideNav = ({ children }: props) => {
           <Menu.Item key="ruta">
             <Link href="/rutas">Rutas</Link>
           </Menu.Item>
+          <Menu.Item key="conductores">
+            <Link href="/conductores">Conductores</Link>
+          </Menu.Item>
           <Menu.Item key="vehiculos">
             <Link href="/vehiculos">Vehiculos</Link>
           </Menu.Item>

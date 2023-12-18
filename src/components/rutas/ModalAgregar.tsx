@@ -55,7 +55,7 @@ const ModalAgregar: React.FC<ModalAgregarProps> = ({
       footer={[
         <Button onClick={cerrarModal}>Cancelar</Button>,
         <Button type="primary" onClick={accion}>
-          Enviar
+          Guardar
         </Button>,
       ]}
     >
