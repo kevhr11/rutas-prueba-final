@@ -40,7 +40,6 @@ const Page: React.FC = () => {
         }
       );
 
-      /* console.log("Datos obtenidos exitosamente", datosConvertidos); */
       setGetData(datosConvertidos);
     } catch (error) {
       // Manejar errores de manera más informativa
@@ -87,59 +86,7 @@ const Page: React.FC = () => {
       console.error("Error al agregar datos:", error);
     }
   };
-  /* const handleAddData = async (values: dataConductores) => {
-    console.log("file ", values.foto);
-
-    try {
-      // Crear un formulario para enviar la imagen
-      const formData = new FormData();
-      formData.append("file", values.foto);
-
-      // Subir la imagen a Firebase Storage
-      const firebaseStorageURL =
-        "https://firebasestorage.googleapis.com/v0/b/rutas-c1289/o";
-      const imageName = `images/${values.foto}`;
-      const storageUploadURL = `${firebaseStorageURL}/${imageName}?uploadType=media`;
-      await axios.put(storageUploadURL, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      // Obtener la URL de la imagen almacenada
-      const imageUrl = `${firebaseStorageURL}/${imageName}`;
-
-      // Insertar datos en Firestore con la URL de la imagen
-      const firestoreURL =
-        "https://firestore.googleapis.com/v1/projects/rutas-c1289/databases/(default)/documents/conductores";
-      const response = await axios.post(
-        firestoreURL,
-        {
-          fields: {
-            foto: { stringValue: imageUrl },
-            nombre: { stringValue: values.nombre },
-            dui: { stringValue: values.dui },
-            direccion: { stringValue: values.direccion },
-            edad: { stringValue: values.edad },
-            licencia: { stringValue: values.licencia },
-            telefono: { stringValue: values.telefono },
-            correo: { stringValue: values.correo },
-          },
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      console.log("Datos agregados con éxito:", response.data);
-      // Actualizar la lista de datos después de agregar
-      await obtenerDatos();
-    } catch (error) {
-      console.error("Error al agregar datos:", error);
-    }
-  }; */
+  
 
   /* --------------------Metodo para editar datos------------------------------------------------------ */
   const handleEditData = async (values: dataProgramacionViajes, id: string) => {
@@ -186,7 +133,7 @@ const Page: React.FC = () => {
     <div>
       {/* ---------------- Modal insertar -------------------- */}
       <Button type="primary" onClick={abrirModal}>
-        Agregar conductor
+        Agregar programación de la ruta
       </Button>
 
       {/* ------------------------Componente para el modal agregar----------------------------------- */}

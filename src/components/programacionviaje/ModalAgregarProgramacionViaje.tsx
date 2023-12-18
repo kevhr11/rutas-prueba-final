@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { dataProgramacionViajes } from "@/app/programacionviajes/dataProgramacionViajes";
-import { Form, Input, Button, Modal, Upload, message, UploadProps } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
-
+import { dataTable } from "@/app/rutas/dataTableInterface";
+import { dataConductores } from "@/app/conductores/dataConductoresInterface";
+import { dataVehiculos } from "@/app/vehiculos/dataVehiculosInterface";
+import { Form, Input, Button, Modal, Select } from "antd";
+import axios from "axios";
 interface ModalAgregarProps {
   modalVisible: boolean;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,7 +18,133 @@ const ModalAgregar: React.FC<ModalAgregarProps> = ({
 }) => {
   const [form] = Form.useForm();
   const { Item } = Form;
+  const [dataRutas, setDataRutas] = useState<dataTable[]>([]);
+  const [dataConductores, setDataConductores] = useState<dataConductores[]>([]);
+  const [dataVehiculos, setDataVehiculos] = useState<dataVehiculos[]>([]);
 
+  /* Estados para los select */
+  const [dataRutasOptions, setDataRutasOptions] = useState<
+    { value: string; label: string }[]
+  >([]);
+  const [dataConductoresOptions, setDataConductoresOptions] = useState<
+    { value: string; label: string }[]
+  >([]);
+  const [dataVehiculosOptions, setDataVehiculosOptions] = useState<
+    { value: string; label: string }[]
+  >([]);
+
+  /* --------------------Metodo para obtener datos rutas------------------------------------------------------ */
+  const obtenerDatosRuta = async () => {
+    try {
+      const firebaseURL =
+        "https://firestore.googleapis.com/v1/projects/rutas-c1289/databases/(default)/documents/rutas";
+
+      const response = await axios.get(firebaseURL);
+
+      // Convertir los datos de la API a la estructura que MyTable espera
+      const datosConvertidos: dataTable[] = response.data.documents.map(
+        (item: any) => {
+          const partesCadena = item.name.split("/");
+          return {
+            key: partesCadena[partesCadena.length - 1],
+            tipoViaje: item.fields.tipoViaje.stringValue,
+            nombreRuta: item.fields.nombreRuta.stringValue,
+            origenRuta: item.fields.origenRuta.stringValue,
+            destinoRuta: item.fields.destinoRuta.stringValue,
+            georreferenciacion: item.fields.georreferenciacion.stringValue,
+            verGeorreferenciacion:
+              item.fields.verGeorreferenciacion.stringValue,
+          };
+        }
+      );
+
+      setDataRutas(datosConvertidos);
+
+      // Mapear los datos para el formato de opciones de Select
+      const opcionesConductores = datosConvertidos.map((ruta) => ({
+        value: ruta.key,
+        label: ruta.nombreRuta,
+      }));
+      setDataRutasOptions(opcionesConductores);
+    } catch (error) {
+      // Manejar errores de manera más informativa
+      console.error("Error al obtener datos de Firebase:", error);
+    }
+  };
+
+  /* --------------------Metodo para obtener datos conductores------------------------------------------------------ */
+  /* const obtenerDatosConductores = async () => {
+    try {
+      const firebaseURL =
+        "https://firestore.googleapis.com/v1/projects/rutas-c1289/databases/(default)/documents/conductores";
+
+      const response = await axios.get(firebaseURL);
+
+      // Convertir los datos de la API a la estructura que MyTable espera
+      const datosConvertidos: dataConductores[] = response.data.documents.map(
+        (item: any) => {
+          const partesCadena = item.name.split("/");
+          return {
+            key: partesCadena[partesCadena.length - 1],
+            foto: item.fields.foto.stringValue,
+            nombre: item.fields.nombre.stringValue,
+            dui: item.fields.dui.stringValue,
+            direccion: item.fields.direccion.stringValue,
+            edad: item.fields.edad.stringValue,
+            licencia: item.fields.licencia.stringValue,
+            telefono: item.fields.telefono.stringValue,
+            correo: item.fields.correo.stringValue,
+          };
+        }
+      );
+
+      setDataConductores(datosConvertidos);
+    } catch (error) {
+      // Manejar errores de manera más informativa
+      console.error("Error al obtener datos de Firebase:", error);
+    }
+  }; */
+
+  /* --------------------Metodo para obtener datos vehiculos------------------------------------------------------ */
+  /* const obtenerDatosVehiculos = async () => {
+    try {
+      const firebaseURL =
+        "https://firestore.googleapis.com/v1/projects/rutas-c1289/databases/(default)/documents/vehiculos";
+
+      const response = await axios.get(firebaseURL);
+
+      // Convertir los datos de la API a la estructura que MyTable espera
+      const datosConvertidos: dataVehiculos[] = response.data.documents.map(
+        (item: any) => {
+          const partesCadena = item.name.split("/");
+          return {
+            key: partesCadena[partesCadena.length - 1],
+            foto: item.fields.foto.stringValue,
+            marca: item.fields.marca.stringValue,
+            modelo: item.fields.modelo.stringValue,
+            year: item.fields.year.stringValue,
+            placa: item.fields.placa.stringValue,
+            capacidad: item.fields.capacidad.stringValue,
+            tipoVehiculo: item.fields.tipoVehiculo.stringValue,
+          };
+        }
+      );
+
+      setDataVehiculos(datosConvertidos);
+    } catch (error) {
+      // Manejar errores de manera más informativa
+      console.error("Error al obtener datos de Firebase:", error);
+    }
+  };
+ */
+  //Obtener datos
+  useEffect(() => {
+    obtenerDatosRuta();
+    /* obtenerDatosConductores();
+    obtenerDatosVehiculos(); */
+  }, []);
+
+  /* --------------Cerrar el modal----------------------------- */
   const cerrarModal = () => {
     setModalVisible(false);
     form.resetFields();
@@ -44,24 +172,6 @@ const ModalAgregar: React.FC<ModalAgregarProps> = ({
       span: 10,
     },
   };
-
-  /*  const props: UploadProps = {
-  name: 'file',
-  action: 'https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188',
-  headers: {
-    authorization: 'authorization-text',
-  },
-  onChange(info: any) {
-    if (info.file.status !== 'uploading') {
-      console.log(info.file, info.fileList);
-    }
-    if (info.file.status === 'done') {
-      message.success(`${info.file.name} file uploaded successfully`);
-    } else if (info.file.status === 'error') {
-      message.error(`${info.file.name} file upload failed.`);
-    }
-  },
-}; */
 
   return (
     <Modal
@@ -95,21 +205,6 @@ const ModalAgregar: React.FC<ModalAgregarProps> = ({
         >
           <Input />
         </Item>
-
-        {/* <Item
-          label="Foto"
-          name="foto"
-          rules={[
-            {
-              required: true,
-              message: "Debe ingresar la foto del conductor",
-            },
-          ]}
-        >
-          <Upload {...props}>
-            <Button icon={<UploadOutlined />}>Subir archivo</Button>
-          </Upload>
-        </Item> */}
         <Item
           label="Fecha y hora de recogida"
           name="fechaHoraRecorrida"
@@ -189,6 +284,11 @@ const ModalAgregar: React.FC<ModalAgregarProps> = ({
           ]}
         >
           <Input />
+          <Select
+            placeholder="Seleccione una ruta"
+            style={{ width: 200 }}
+            options={dataRutasOptions}
+          />
         </Item>
       </Form>
     </Modal>
