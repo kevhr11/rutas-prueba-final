@@ -283,7 +283,7 @@ const ModalAgregar: React.FC<ModalAgregarProps> = ({
             },
           ]}
         >
-          <Input />
+          {/* <Input /> */}
           <Select
             placeholder="Seleccione una ruta"
             style={{ width: 200 }}

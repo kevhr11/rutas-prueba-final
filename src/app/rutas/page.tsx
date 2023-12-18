@@ -9,6 +9,9 @@ import { Form, Input, Button, Col, Row, Modal } from "antd";
 import ModalEditar from "@/components/rutas/ModalEditar";
 const { Item } = Form;
 
+//Importar rutas
+import Mapa from "./Mapa";
+
 const Page = () => {
   const [getData, setGetData] = useState<dataTable[]>([]);
   const [getDataEditar, setGetDataEditar] = useState<dataTable>();
@@ -128,9 +131,10 @@ const Page = () => {
   return (
     <div>
       Rutas Page
+      {/* <Mapa country="apaneca" /> */}
+      <h1>Mapa de OpenStreetMap</h1>
       <Row justify="center">
         <Col xs={22} sm={20} md={18} lg={20}>
-          
           {/* ---------------- Modal insertar -------------------- */}
           <Button type="primary" onClick={abrirModal}>
             Agregar ruta

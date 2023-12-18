@@ -1,7 +1,7 @@
 "use client";
 
 import axios from "axios";
-import { Card, Button, Form, Row, Col } from "antd";
+import { Card, Button, Form, Row, Col, Switch } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import { dataProgramacionViajes } from "./dataProgramacionViajes";
@@ -129,23 +129,37 @@ const Page: React.FC = () => {
     setModalVisibleEditar(true);
   };
 
+
+  const cambiar2 = (id: string, checked: boolean) => {
+    console.log(`id: ${id}`);
+    console.log(`Cambio a ${checked}`);
+  };
+
+  const cambiar = (checked: boolean) => {
+    console.log(`Cambio a ${checked}`);
+  };
+
+  
+
   return (
     <div>
-      {/* ---------------- Modal insertar -------------------- */}
+      <Switch
+        checkedChildren="Activo"
+        unCheckedChildren="Inactivo"
+        onChange={cambiar}
+      />
+      ;{/* ---------------- Modal insertar -------------------- */}
       <Button type="primary" onClick={abrirModal}>
         Agregar programación de la ruta
       </Button>
-
       {/* ------------------------Componente para el modal agregar----------------------------------- */}
       <ModalAgregar
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
         handleAddData={handleAddData}
       />
-
       <br />
       <br />
-
       {/* ------------------------Componente para el modal Editar------------------------------------ */}
       <ModalEditar
         modalVisibleEditar={modalVisibleEditar}
