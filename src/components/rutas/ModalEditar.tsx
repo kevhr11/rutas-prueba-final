@@ -78,8 +78,8 @@ const ModalEditar: React.FC<ModalEditarProps> = ({
               message: "Debe ingresar el tipo de viaje",
             },
             {
-              pattern: /^[A-Za-z\s]+$/, // Expresión regular para aceptar letras y espacios
-              message: "Solo se permite texto con espacios",
+              pattern: /^[a-zA-ZáéíóúüÜÁÉÍÓÚ\s]+$/, // Expresión regular para aceptar letras y espacios
+              message: "Solo se permite texto y espacios",
             },
           ]}
         >
@@ -94,8 +94,8 @@ const ModalEditar: React.FC<ModalEditarProps> = ({
               message: "Debe ingresar el nombre de la ruta",
             },
             {
-              pattern: /^[A-Za-z\s]+$/, // Expresión regular para aceptar letras y espacios
-              message: "Solo se permite texto con espacios",
+              pattern: /^[a-zA-ZáéíóúüÜÁÉÍÓÚ\s]+$/, // Expresión regular para aceptar letras y espacios
+              message: "Solo se permite texto y espacios",
             },
           ]}
         >
@@ -110,8 +110,8 @@ const ModalEditar: React.FC<ModalEditarProps> = ({
               message: "Debe ingresar el origen de la ruta",
             },
             {
-              pattern: /^[A-Za-z\s]+$/, // Expresión regular para aceptar letras y espacios
-              message: "Solo se permite texto con espacios",
+              pattern: /^[a-zA-ZáéíóúüÜÁÉÍÓÚ\s]+$/, // Expresión regular para aceptar letras y espacios
+              message: "Solo se permite texto y espacios",
             },
           ]}
         >
@@ -126,14 +126,14 @@ const ModalEditar: React.FC<ModalEditarProps> = ({
               message: "Debe ingresar el destino de la ruta",
             },
             {
-              pattern: /^[A-Za-z\s]+$/, // Expresión regular para aceptar letras y espacios
-              message: "Solo se permite texto con espacios",
+              pattern: /^[a-zA-ZáéíóúüÜÁÉÍÓÚ\s]+$/, // Expresión regular para aceptar letras y espacios
+              message: "Solo se permite texto y espacios",
             },
           ]}
         >
           <Input />
         </Item>
-        <Item
+        {/* <Item
           label="Georreferenciacion"
           name="georreferenciacion"
           rules={[
@@ -148,7 +148,8 @@ const ModalEditar: React.FC<ModalEditarProps> = ({
           ]}
         >
           <Input />
-        </Item>
+        </Item> */}
+        {/* 
         <Item
           label="Ver georreferenciacion"
           name="verGeorreferenciacion"
@@ -164,7 +165,7 @@ const ModalEditar: React.FC<ModalEditarProps> = ({
           ]}
         >
           <Input />
-        </Item>
+        </Item> */}
       </Form>
     </Modal>
   );

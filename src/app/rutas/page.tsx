@@ -9,8 +9,6 @@ import { Form, Input, Button, Col, Row, Modal } from "antd";
 import ModalEditar from "@/components/rutas/ModalEditar";
 const { Item } = Form;
 
-//Importar rutas
-import Mapa from "./Mapa";
 
 const Page = () => {
   const [getData, setGetData] = useState<dataTable[]>([]);
@@ -27,6 +25,7 @@ const Page = () => {
         "https://firestore.googleapis.com/v1/projects/rutas-c1289/databases/(default)/documents/rutas";
 
       const response = await axios.get(firebaseURL);
+      /* console.log(response); */
 
       // Convertir los datos de la API a la estructura que MyTable espera
       const datosConvertidos: dataTable[] = response.data.documents.map(
@@ -39,6 +38,7 @@ const Page = () => {
             origenRuta: item.fields.origenRuta.stringValue,
             destinoRuta: item.fields.destinoRuta.stringValue,
             georreferenciacion: item.fields.georreferenciacion.stringValue,
+            estado: item.fields.estado.booleanValue,
             verGeorreferenciacion:
               item.fields.verGeorreferenciacion.stringValue,
           };
@@ -128,6 +128,33 @@ const Page = () => {
     setModalVisibleEditar(true);
   };
 
+  /* ------------------------------Funcion Switch------------------------------------------ */
+  const cambiar = async (rowData: dataTable, id: string) => {
+    console.log("datos ", rowData, "id: ", id);
+    try {
+      const response = await axios.patch(
+        `https://firestore.googleapis.com/v1/projects/rutas-c1289/databases/(default)/documents/rutas/${id}`,
+        {
+          fields: {
+            tipoViaje: { stringValue: rowData.tipoViaje },
+            nombreRuta: { stringValue: rowData.nombreRuta },
+            origenRuta: { stringValue: rowData.origenRuta },
+            destinoRuta: { stringValue: rowData.destinoRuta },
+            georreferenciacion: { stringValue: rowData.georreferenciacion },
+            verGeorreferenciacion: {
+              stringValue: rowData.verGeorreferenciacion,
+            },
+            estado: { booleanValue: !rowData.estado }, // Invertir el valor
+          },
+        }
+      );
+      console.log("Datos editados con éxito:", response.data);
+      await obtenerDatos();
+    } catch (error) {
+      console.error("Error al editar datos:", error);
+    }
+  };
+
   return (
     <div>
       Rutas Page
@@ -157,7 +184,11 @@ const Page = () => {
             getDataEditar={getDataEditar}
           />
           {/* ------------------------Componente de tabla donde se muestran los datos------------------------------------ */}
-          <Table data={getData} modalEditar={seleccionarRutaEditar} />
+          <Table
+            data={getData}
+            modalEditar={seleccionarRutaEditar}
+            cambiar={cambiar}
+          />
         </Col>
       </Row>
     </div>

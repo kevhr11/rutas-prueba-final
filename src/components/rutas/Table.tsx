@@ -1,20 +1,23 @@
 import React, { useState } from "react";
 import { dataTable } from "@/app/rutas/dataTableInterface";
-import { Table, Button } from "antd";
+import { Table, Button, Switch } from "antd";
 import ModalMapa from "./ModalMapa";
 
 interface MyTableProps {
   data: dataTable[];
   modalEditar: (rowData: dataTable) => void;
+  cambiar: (rowData: dataTable, id: string) => void;
 }
 
-const MyTable: React.FC<MyTableProps> = ({ data, modalEditar }) => {
+const MyTable: React.FC<MyTableProps> = ({ data, modalEditar, cambiar }) => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [destinoRuta, setDestinoRuta] = useState<string>();
+  const [origenRuta, setOrigenRuta] = useState<string>();
 
   /* ------------------------------ Función Modal Insertar ------------------------------ */
-  const abrirModal = (destinoOrigen: string) => {
-    setDestinoRuta(destinoOrigen);
+  const abrirModal = (origen: string, destino: string) => {
+    setOrigenRuta(origen);
+    setDestinoRuta(destino);
     setModalVisible(true);
   };
 
@@ -39,11 +42,18 @@ const MyTable: React.FC<MyTableProps> = ({ data, modalEditar }) => {
       dataIndex: "destinoRuta",
       key: "destinoRuta",
     },
-    /* {
-      title: "Georreferenciación",
-      dataIndex: "georreferenciacion",
-      key: "georreferenciacion",
-    }, */
+    {
+      title: "Estado",
+      key: "estado",
+      render: (data: dataTable) => (
+        <Switch
+          checked={data.estado}
+          checkedChildren="Activo"
+          unCheckedChildren="Inactivo"
+          onChange={() => cambiar(data, data.key)}
+        />
+      ),
+    },
     {
       title: "Ver georreferenciación",
       /* dataIndex: "verGeorreferenciacion", */
@@ -52,7 +62,7 @@ const MyTable: React.FC<MyTableProps> = ({ data, modalEditar }) => {
         <>
           <Button
             type="link"
-            onClick={() => abrirModal(data.destinoRuta)}
+            onClick={() => abrirModal(data.origenRuta, data.destinoRuta)}
           >
             Ver Mapa
           </Button>
@@ -78,6 +88,7 @@ const MyTable: React.FC<MyTableProps> = ({ data, modalEditar }) => {
       <ModalMapa
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
+        dataOrigen={origenRuta || ""}
         dataDestino={destinoRuta || ""}
       />
     </>

@@ -5,5 +5,6 @@ export interface dataTable {
   origenRuta: string;
   destinoRuta: string;
   georreferenciacion: string;
+  estado: boolean;
   verGeorreferenciacion: string;
 }

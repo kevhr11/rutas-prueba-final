@@ -4,13 +4,15 @@ import Mapa from "@/app/rutas/Mapa";
 interface ModalMapaProps {
   modalVisible: boolean;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  dataOrigen: string;
   dataDestino: string;
 }
 
 const ModalAgregar: React.FC<ModalMapaProps> = ({
   modalVisible,
   setModalVisible,
-  dataDestino,
+  dataOrigen,
+  dataDestino
 }) => {
   const [form] = Form.useForm();
   const { Item } = Form;
@@ -41,7 +43,7 @@ const ModalAgregar: React.FC<ModalMapaProps> = ({
       centered
       footer={[<Button onClick={cerrarModal}>Cancelar</Button>]}
     >
-      <Mapa country={dataDestino} />
+      <Mapa origen={dataOrigen} destino={dataDestino} />
     </Modal>
   );
 };
